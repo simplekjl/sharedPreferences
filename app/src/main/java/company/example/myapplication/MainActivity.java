@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 public class MainActivity extends ActionBarActivity   {
@@ -39,6 +40,7 @@ public class MainActivity extends ActionBarActivity   {
     private String labelN;
     String filename = "myfile";
     String string = "Hello world!";
+    private String file = "mydata";
 
 
     @Override
@@ -122,6 +124,8 @@ public class MainActivity extends ActionBarActivity   {
     }
     public void guardaInterno(View view){
 
+        EditText textS = (EditText) findViewById(R.id.textSave);
+        String data = textS.getText().toString();
         try {
             FileOutputStream fOut = openFileOutput(file,MODE_WORLD_READABLE);
             fOut.write(data.getBytes());
@@ -132,6 +136,21 @@ public class MainActivity extends ActionBarActivity   {
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+    public void leerInterno(View view) {
+        EditText ponlo = (EditText) findViewById(R.id.textSave);
+        try {
+            FileInputStream fin = openFileInput(file);
+            int c;
+            String temp = "";
+
+            while ((c = fin.read()) != -1) {
+                temp = temp + Character.toString((char) c);
+            }
+            ponlo.setText(temp);
+            Toast.makeText(getBaseContext(), "file read", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
         }
     }
 }

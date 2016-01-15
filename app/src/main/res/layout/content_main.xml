@@ -51,6 +51,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/textSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Write for save into a file"/>
@@ -62,16 +63,24 @@
                android:id="@+id/btnSave"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
+               android:text="Save"
                android:layout_weight="1"
                android:onClick="guardaInterno"/>
            <Button
                android:id="@+id/btnLoad"
                android:layout_width="0dp"
-               android:layout_weight="1s"
+               android:layout_weight="1"
+               android:text="Load"
                android:layout_height="wrap_content"
                android:onClick="leerInterno"/>
        </LinearLayout>
 
     </LinearLayout>
+    <ListView
+        android:id="@+id/lv1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
 
 </LinearLayout>
