@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 public class MainActivity extends ActionBarActivity   {
 
@@ -36,6 +37,8 @@ public class MainActivity extends ActionBarActivity   {
     //capmpos de texto
     TextView etiqueta_nombre;
     private String labelN;
+    String filename = "myfile";
+    String string = "Hello world!";
 
 
     @Override
@@ -48,7 +51,7 @@ public class MainActivity extends ActionBarActivity   {
         SharedPreferences prefs = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if(prefs !=null)
         {
-             labelN = prefs.getString(Name, null);
+             labelN = prefs.getString("nombre", null);
             etiqueta_nombre = (TextView) findViewById(R.id.name_label);
             etiqueta_nombre.setText(labelN);
 
@@ -61,7 +64,7 @@ public class MainActivity extends ActionBarActivity   {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "File already created on the storage", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -101,8 +104,34 @@ public class MainActivity extends ActionBarActivity   {
 
     @Override
     protected void onStop() {
+
+        //TODO use this method to use the shared preferences
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //obteniendo los nombres de los edittext
+        nombre = (EditText) findViewById(R.id.nombre);
+        String va =nombre.getText().toString();
+        //setting the text
+        etiqueta_nombre = (TextView) findViewById(R.id.name_label);
+        etiqueta_nombre.setText(va);
+
+        editor.putString(Name, va);
+        editor.commit();
         super.onStop();
 
-        //TODO use this method to use the shared preferences 
+    }
+    public void guardaInterno(View view){
+
+        try {
+            FileOutputStream fOut = openFileOutput(file,MODE_WORLD_READABLE);
+            fOut.write(data.getBytes());
+            fOut.close();
+            Toast.makeText(getBaseContext(),"file saved",Toast.LENGTH_SHORT).show();
+        }
+
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
