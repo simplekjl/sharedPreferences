@@ -25,8 +25,15 @@ public class Contact {
         this.name = name;
     }
 
-    public Contact(){
-        //
+    public Contact(int id, String name, int phoneNumber){
+        this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+
+    }
+    public Contact()
+    {
+
     }
 
     public int getPhoneNumber() {

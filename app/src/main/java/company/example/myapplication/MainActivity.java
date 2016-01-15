@@ -26,6 +26,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
+
+import company.example.myapplication.database.DatabaseHelper;
+import company.example.myapplication.descriptor.Contact;
 
 public class MainActivity extends ActionBarActivity   {
 
@@ -58,8 +62,29 @@ public class MainActivity extends ActionBarActivity   {
             etiqueta_nombre.setText(labelN);
 
         }
+        //TODO look for database 
+        DatabaseHelper db = new DatabaseHelper(this);
+                 
+        /**
+                  * CRUD Operations
+                  * */
+                // Inserting Contacts
+                Log.d("Insert: ", "Inserting ..");
 
-
+                db.addContact(new Contact(1,"Ravi", 910000000));
+                db.addContact(new Contact(2,"Srinivas",919999999));
+                db.addContact(new Contact(3,"Tommy", 952222222));
+                db.addContact(new Contact(4,"Karthik",953333333));
+                 
+                // Reading all contacts
+                Log.d("Reading: ", "Reading all contacts..");
+                List<Contact> contacts = db.getAllContacts();
+                 
+                for (Contact cn : contacts) {
+                    String log = "Id: " + cn.getId() + " ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
+                    // Writing Contacts to log
+                    Log.d("Name: ", log);
+                }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
