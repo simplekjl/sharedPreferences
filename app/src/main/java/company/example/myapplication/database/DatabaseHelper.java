@@ -25,12 +25,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
     // Contacts table name
     private static final String TABLE_CONTACTS = "contacts";
-    
+
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_PH_NO = "phone_number";
-    
+
+    // Address TABLE
+    private static final String TABLE_ADREESS  = "direction";
+    //Address Columns names
+    private static final String KEY_ID_USER = "User";
+    private static final String KEY_STREET = "Street";
+    private static final String KEY_NUMBER = "Number";
+    private static final String KEY_STATE = "State";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -40,6 +48,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
         + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_PH_NO + " TEXT" + ")";
+
+        //Address Table
+        String CREATE_ADREESS_TABLE = "CREATE TABLE " + TABLE_ADREESS + "("
+                + KEY_ID_USER + " INTEGER PRIMARY KEY," + KEY_STREET + " TEXT,"
+                + KEY_NUMBER + " TEXT," + KEY_STATE + " TEXT)" +
+
+                "FOREIGN KEY("+KEY_ID_USER+") " +
+                "REFERENCES contact("+KEY_ID+")";
+
+
         db.execSQL(CREATE_CONTACTS_TABLE);
         }
     
@@ -48,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
                 // Drop older table if existed
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADREESS);
          
                 // Create tables again
                 onCreate(db);
@@ -64,9 +83,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContentValues values = new ContentValues();
                 values.put(KEY_NAME, contact.getName()); // Contact Name
                 values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+                //values.put(KEY_STREET, contact.getStreet()); //Street name
+                //values.put(KEY_NUMBER, contact.getNumber());
+                //values.put(KEY_STATE, contact.getNumber());
+
 
                 // Inserting Row
                 db.insert(TABLE_CONTACTS, null, values);
+
+
+
                 db.close(); // Closing database connection
             }
      
@@ -80,7 +106,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 if (cursor != null)
                     cursor.moveToFirst();
          
-                Contact contact = new Contact(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2)));
+                Contact contact = new Contact(
+                        Integer.parseInt(cursor.getString(0)),
+                        cursor.getString(1),
+                        Integer.parseInt(cursor.getString(2)));
                 // return contact
                 return contact;
             }
@@ -93,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(selectQuery, null);
-         
+
     // looping through all rows and adding to list
     if (cursor.moveToFirst()) {
     do {
@@ -101,6 +130,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contact.setId(Integer.parseInt(cursor.getString(0)));
             contact.setName(cursor.getString(1));
             contact.setPhoneNumber(cursor.getInt(2));
+//            contact.setStreet(cursor.getString(3));
+   //         contact.setNumber(cursor.getInt(4));
+     //       contact.setState(cursor.getString(5));
             // Adding contact to list
             contactList.add(contact);
         } while (cursor.moveToNext());

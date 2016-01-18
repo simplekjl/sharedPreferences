@@ -5,9 +5,51 @@ package company.example.myapplication.descriptor;
  */
 public class Contact {
     private int     id;
-    private String  name;
-
     private int     phoneNumber;
+    private String  name;
+    private int     number;
+    private String  state;
+    private String  street;
+
+    public Contact(int id, String name, int phoneNumber,String street , int number, String state) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+        this.number = number;
+        this.state = state;
+        this.street = street;
+    }
+    public Contact(int id, String name, int phoneNumber){
+        this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+
+    }
+
+    public String getStreet() {
+
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public int getId() {
         return id;
@@ -25,12 +67,7 @@ public class Contact {
         this.name = name;
     }
 
-    public Contact(int id, String name, int phoneNumber){
-        this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
 
-    }
     public Contact()
     {
 

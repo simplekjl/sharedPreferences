@@ -1,6 +1,7 @@
 package company.example.myapplication;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,19 +20,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import company.example.myapplication.database.DatabaseHelper;
 import company.example.myapplication.descriptor.Contact;
 
-public class MainActivity extends ActionBarActivity   {
+public class MainActivity extends AppCompatActivity  {
 
     private ShareActionProvider mShareActionProvider;
     SharedPreferences sharedPreferences;
@@ -45,6 +50,9 @@ public class MainActivity extends ActionBarActivity   {
     String filename = "myfile";
     String string = "Hello world!";
     private String file = "mydata";
+    private ListView listView;
+    private ArrayList<String> contactos = new ArrayList<>();
+
 
 
     @Override
@@ -70,22 +78,37 @@ public class MainActivity extends ActionBarActivity   {
                   * */
                 // Inserting Contacts
                 Log.d("Insert: ", "Inserting ..");
-
-                db.addContact(new Contact(1,"Ravi", 910000000));
+            //int id, String name, int phoneNumber,String street , int number, String state
+                db.addContact(new Contact(1, "Ravi", 910000000));
                 db.addContact(new Contact(2,"Srinivas",919999999));
-                db.addContact(new Contact(3,"Tommy", 952222222));
+                db.addContact(new Contact(3,"Tommy", 952222222 ));
                 db.addContact(new Contact(4,"Karthik",953333333));
                  
                 // Reading all contacts
                 Log.d("Reading: ", "Reading all contacts..");
                 List<Contact> contacts = db.getAllContacts();
-                 
+                int i =0;
                 for (Contact cn : contacts) {
                     String log = "Id: " + cn.getId() + " ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
+                    contactos.add("Name: " + log);
+                    i++;
                     // Writing Contacts to log
                     Log.d("Name: ", log);
                 }
+        listView = (ListView) findViewById(R.id.lv1);
 
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this, R.layout.list_item, R.id.label, contactos);
+        ListView lv = (ListView)findViewById(R.id.lv1);
+        lv.setAdapter(adapter);
+        // list View
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("ListView", "clicked on item: " + position);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +175,7 @@ public class MainActivity extends ActionBarActivity   {
         EditText textS = (EditText) findViewById(R.id.textSave);
         String data = textS.getText().toString();
         try {
-            FileOutputStream fOut = openFileOutput(file,MODE_WORLD_READABLE);
+            FileOutputStream fOut = openFileOutput(file ,MODE_WORLD_READABLE);
             fOut.write(data.getBytes());
             fOut.close();
             Toast.makeText(getBaseContext(),"file saved",Toast.LENGTH_SHORT).show();
