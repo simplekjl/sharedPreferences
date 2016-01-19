@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_ADREESS_TABLE);
         }
     
     // Upgrading database
@@ -158,7 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 public void deleteContact(Contact contact) {
                 SQLiteDatabase db = this.getWritableDatabase();
                 db.delete(TABLE_CONTACTS, KEY_ID + " = ?",
-                                new String[] { String.valueOf(contact.getId()) });
+                        new String[]{String.valueOf(contact.getId())});
                 db.close();
             }
      
@@ -173,4 +175,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // return count
                 return cursor.getCount();
             }
+
+    private static boolean doesDatabaseExist(Context context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }
 }
